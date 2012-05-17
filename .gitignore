@@ -1,5 +1,7 @@
 buildout.cfg
 bin/
+downloads/
+eggs/
 src/
 parts/
 var/
