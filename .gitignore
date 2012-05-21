@@ -6,3 +6,6 @@ src/
 parts/
 var/
 .installed.cfg
+cfgs/ip_settings.cfg
+cfgs/pwd.cfg
+cfgs/*_custom.cfg
