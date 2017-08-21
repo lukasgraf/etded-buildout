@@ -9,8 +9,8 @@ ETL_HOME="$HOME/etlegacy-server"
 
 
 # Prevent script from accidentally being run in unexpected environment
-if [ $(hostname) != "et" ]; then
-    echo "Hostname is not 'et', aborting"
+if [ $(hostname) != "etlegacy" ]; then
+    echo "Hostname is not 'etlegacy', aborting"
     exit 1
 fi
 
