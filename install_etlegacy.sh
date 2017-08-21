@@ -3,9 +3,12 @@ set -euo pipefail
 
 ETL_VERSION="etlegacy-v2.75-i386"
 ETL_URL="https://www.etlegacy.com/download/file/85"
+NQ_MOD_URL="http://wolffiles.de/filebase/ET/Mods/nq_v1-2-9_b6.zip"
 
 TMPDIR="/tmp"
 ETL_HOME="$HOME/etlegacy-server"
+NQ_DIR=$ETL_HOME/nq
+
 LAUNCH_SCRIPT="run_etlded.sh"
 
 
@@ -57,6 +60,23 @@ rm -rf $TMP_ASSETS/{bin,Docs,README,pb,openurl.sh,CHANGES,ET.xpm} $TMP_ASSETS/se
 cp -r $TMP_ASSETS/* $ETL_HOME/
 rm -rf $TMP_ASSETS
 rm -f $TMP_ASSETS_ARCHIVE
+
+echo
+echo "Installing NoQuarter Mod..."
+TMP_NQ_DIST=$TMPDIR/nq-dist
+wget -O $TMPDIR/nq.zip $NQ_MOD_URL
+unzip $TMPDIR/nq.zip -d $TMP_NQ_DIST
+
+mkdir $NQ_DIR
+cp -r $TMP_NQ_DIST/* $NQ_DIR/
+rm $NQ_DIR/*.dll
+rm $TMPDIR/nq.zip
+rm -rf $TMP_NQ_DIST
+
+echo "Installing server configs..."
+cp noquarter.cfg $NQ_DIR/
+cp server.cfg $ETL_HOME/etmain/
+cp mapvotecycle.cfg $NQ_DIR/
 
 echo
 echo "Installing launch script..."
