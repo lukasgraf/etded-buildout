@@ -4,6 +4,7 @@ set -euo pipefail
 ETL_VERSION="etlegacy-v2.75-i386"
 ETL_URL="https://www.etlegacy.com/download/file/85"
 NQ_MOD_URL="http://wolffiles.de/filebase/ET/Mods/nq_v1-2-9_b6.zip"
+WOLF_ET_ASSETS_URL="http://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/et/linux/et-linux-2.60.x86.run"
 
 TMPDIR="/tmp"
 ETL_HOME="$HOME/etlegacy-server"
@@ -25,10 +26,10 @@ if [ -d "$ETL_HOME" ]; then
 fi
 
 # Download ETLegacy Linux 32bit binaries
+echo "Installing ET:Legacy ($ETL_VERSION)..."
 echo
-echo "Downloading $ETL_URL to $TMPDIR/$ETL_VERSION.tar.gz"
-echo
-wget -O $TMPDIR/$ETL_VERSION.tar.gz $ETL_URL
+echo "Downloading $ETL_URL"
+curl -# $ETL_URL > $TMPDIR/$ETL_VERSION.tar.gz
 
 # Extract .tar.gz to /tmp
 tar xvpf $TMPDIR/$ETL_VERSION.tar.gz -C $TMPDIR
@@ -45,9 +46,10 @@ TMP_ASSETS=$TMPDIR/etwolf-assets
 TMP_ASSETS_ARCHIVE=$TMPDIR/et-linux-2.60.x86.run
 
 echo
-echo "Fetching Wolf:ET assets data files..."
+echo "Fetching Wolf:ET asset data files..."
 echo
-wget -O $TMP_ASSETS_ARCHIVE http://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/et/linux/et-linux-2.60.x86.run
+echo "Downloading $WOLF_ET_ASSETS_URL"
+curl -# $WOLF_ET_ASSETS_URL > $TMP_ASSETS_ARCHIVE
 
 #echo "Verifying assets data files integrity"
 #sha256sum -c $checksum || exit 1
@@ -63,8 +65,10 @@ rm -f $TMP_ASSETS_ARCHIVE
 
 echo
 echo "Installing NoQuarter Mod..."
+echo
 TMP_NQ_DIST=$TMPDIR/nq-dist
-wget -O $TMPDIR/nq.zip $NQ_MOD_URL
+echo "Downloading $NQ_MOD_URL"
+curl -# $NQ_MOD_URL > $TMPDIR/nq.zip
 unzip $TMPDIR/nq.zip -d $TMP_NQ_DIST
 
 mkdir $NQ_DIR
@@ -84,8 +88,10 @@ cp $LAUNCH_SCRIPT $ETL_HOME/
 echo
 
 echo "All done!"
-echo "======================================================================="
 echo
+echo "======================================================================="
 echo "Launch ET:Legacy like this:"
+echo
 echo "cd $ETL_HOME && ./$LAUNCH_SCRIPT"
+echo "======================================================================="
 echo
