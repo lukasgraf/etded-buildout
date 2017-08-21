@@ -6,6 +6,7 @@ ETL_URL="https://www.etlegacy.com/download/file/85"
 
 TMPDIR="/tmp"
 ETL_HOME="$HOME/etlegacy-server"
+LAUNCH_SCRIPT="run_etlded.sh"
 
 
 # Prevent script from accidentally being run in unexpected environment
@@ -21,7 +22,9 @@ if [ -d "$ETL_HOME" ]; then
 fi
 
 # Download ETLegacy Linux 32bit binaries
+echo
 echo "Downloading $ETL_URL to $TMPDIR/$ETL_VERSION.tar.gz"
+echo
 wget -O $TMPDIR/$ETL_VERSION.tar.gz $ETL_URL
 
 # Extract .tar.gz to /tmp
@@ -38,16 +41,31 @@ echo "$ETL_VERSION" > $ETL_HOME/version.txt
 TMP_ASSETS=$TMPDIR/etwolf-assets
 TMP_ASSETS_ARCHIVE=$TMPDIR/et-linux-2.60.x86.run
 
+echo
 echo "Fetching Wolf:ET assets data files..."
+echo
 wget -O $TMP_ASSETS_ARCHIVE http://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/et/linux/et-linux-2.60.x86.run
 
 #echo "Verifying assets data files integrity"
 #sha256sum -c $checksum || exit 1
 
 echo "Installing assets..."
+echo
 chmod +x $TMP_ASSETS_ARCHIVE
 $TMP_ASSETS_ARCHIVE --noexec --target $TMP_ASSETS
 rm -rf $TMP_ASSETS/{bin,Docs,README,pb,openurl.sh,CHANGES,ET.xpm} $TMP_ASSETS/setup.{data,sh} $TMP_ASSETS/etmain/{*.cfg,*.so,*.txt,*.dat,mp_bin.pk3}
 cp -r $TMP_ASSETS/* $ETL_HOME/
 rm -rf $TMP_ASSETS
 rm -f $TMP_ASSETS_ARCHIVE
+
+echo
+echo "Installing launch script..."
+cp $LAUNCH_SCRIPT $ETL_HOME/
+echo
+
+echo "All done!"
+echo "======================================================================="
+echo
+echo "Launch ET:Legacy like this:"
+echo "cd $ETL_HOME && ./$LAUNCH_SCRIPT"
+echo
