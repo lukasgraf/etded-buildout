@@ -73,6 +73,8 @@ unzip $TMPDIR/nq.zip -d $TMP_NQ_DIST
 
 mkdir $NQ_DIR
 cp -r $TMP_NQ_DIST/* $NQ_DIR/
+# Install LUA enabled NQ mod
+cp $TMP_NQ_DIST/with_lua/qagame.mp.i386.so $NQ_DIR/qagame.mp.i386.so
 rm $NQ_DIR/*.dll
 rm $TMPDIR/nq.zip
 rm -rf $TMP_NQ_DIST
